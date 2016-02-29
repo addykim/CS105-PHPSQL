@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+html {
+  max-height: 100%;
+  max-width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  font-style: normal;
+  font-family: sans-serif;
+}
+
+/*TODO This might not be kosher */
+body {
+
+}
+
+main {
+  padding: 0em 2em 0em 2em;
+}
+
+header {
+  background-color: #4ddbff;
+  padding: 2em;
+  color: #ffffff;
+}
+
+footer {
+  margin-left: auto;
+  margin-right: none;
+  padding: 0 2em 0 2em; 
+  /*background-color: #0099ff;*/
+  /*color: #ffffff;*/
+}
+
+ul { 
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+li {
+  display: inline-block;
+  padding: 0 0.5em 0 0.5em;
+  text-align: center;
+}
+
+li.next:before {
+  content: "→"; 
+  padding-right: 1em;
+}
+
+a:link {
+  text-decoration: none;
+  color: white;
+}
+
+a:visted {
+  text-decoration: none;
+  color: white;
+
+}
+
+/*Classes*/
+
+
+.left {
+  float: left;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right {
+  float: right;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.clear {
+  clear: both;
+}
+
+.live-auction {
+  padding: 2em;
+}
+
+.subtext {
+  color: dimgrey;
+}
+
+.box-border {
+  border: solid;
+}
+
+.item-box {
+  /*TODO change color*/
+  background-color: #ccf5ff;
+  margin-bottom: 2em;
+  padding: 2em;
+}
+
+.stock-thumb {
+  width: 5em;
+  height: 5em;
+}
+
+.stock-image {
+  width: 15em;
+  height: 15em;
+}
+
+/*ID*/
+
+#term-condition {
+  height: 15em;
+  overflow-y: scroll;
+  resize: none;
+}
