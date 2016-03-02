@@ -1,3 +1,21 @@
+<?php
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
+    header('Location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+    exit(1);
+}
+require_once '/u/askim/openDatabase.php';
+
+$pesonQuery = $dataBase-prepare(<<<'SQL'
+    SELECT 
+      PERSON_ID,
+      SURNAME,
+      FORENAME,
+      EMAIL_ADDRESS
+    FROM PERSON;
+SQL
+);
+$execSuccess = $personQuery->execute();
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
