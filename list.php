@@ -50,14 +50,10 @@ $categories->execute();
     </header>
   
     <main>
-        <!-- <? if ($uploadSuccess): ?> -->
-            <!-- <h2><a href="list.php">List Item</a> → Item Listed Successfully</h2> -->
-        <!-- <? else: ?> -->
-            <h2>List Item</h2>
-        <!-- <? endif; ?> -->
-        
+        <h2>List Item</h2>
         <form action="listItem.php" method="post" enctype="multipart/form-data">
             <div class="item-box">
+
             <table>
                 <tr>
                     <td><b>Upload Images</b></td>

@@ -45,6 +45,7 @@ $thisAccount = $thisAccountQuery->fetch();
     <p><b>Name</b>: <?= $thisAccount['SURNAME'] ?> <?= $thisAccount['FORENAME'] ?></p>
     <p><b>Email</b>: <?= $thisAccount['EMAIL_ADDRESS'] ?></p>
 
+<!-- TODO up date password -->
 <?php
 $thisAccountQuery->closeCursor();
 ?>      

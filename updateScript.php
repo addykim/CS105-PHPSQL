@@ -1,41 +1,49 @@
-<!-- Change to accomodate bids -->
-
 <?php
-if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
-    header('HTTP/1.1 403 Forbidden: TLS Required');
-    // Optionally output an error page here
-    exit(1);
-}
+// if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
+//     header('HTTP/1.1 403 Forbidden: TLS Required');
+//     // Optionally output an error page here
+//     exit(1);
+// }
 
-require_once '/u/jthywiss/ai/cs105_2016spring/TyEPZG4HICNhgGGTKoljNIBPRQe67GJ/openDatabase.php';
+require_once '/u/askim/openDatabase.php';
 
-$currentPersonId = $_POST['personId'];
-$newForename = $_POST['forename'];
-$newSurname = $_POST['surname'];
-$newEmailAddress = $_POST['emailAddress'];
-$rawPassword = $_POST['password'];
-$hashedPassword = password_hash($rawPassword, PASSWORD_DEFAULT);
-unset($rawPassword);
+$sellerId = 1;
+// TODO replace once login works
+// $sellerId = $_SESSION['authenticatedUser'];
+$name = $_POST['name'];
+$category = $_POST['category'];
+$bid = $_POST['bid'];
+$description = $_POST['description'];
 
-$personUpdate = $database->prepare(<<<'SQL'
-   UPDATE PERSON
-       SET
-           FORENAME      = :newForename,
-           SURNAME       = :newSurname,
-           EMAIL_ADDRESS = :newEmailAddress,
-           PASSWORD      = :hashedPassword
-       WHERE PERSON_ID = :currentPersonId;
+$newIdQuery = $database->prepare('SELECT NEXT_SEQ_VALUE(:seqGenName);');
+$newIdQuery->bindValue(':seqGenName', 'ITEM_CATEGORY', PDO::PARAM_STR);
+$newIdQuery->execute();
+$newItemId = $newIdQuery->fetchColumn(0);
+$newIdQuery->closeCursor();
+
+$item = $database->prepare(<<<'SQL'
+    UPDATE AUCTION 
+    SET
+        ITEM_CAPTION        = :name,
+        ITEM_CATEGORY       = :category,
+        ITEM_DESCRIPTION    = :description
+    WHERE 
+    AUCTION_ID = :auctionId;
 SQL
 );
-$personUpdate->bindValue(':newForename', $newForename, PDO::PARAM_STR);
-$personUpdate->bindValue(':newSurname', $newSurname, PDO::PARAM_STR);
-$personUpdate->bindValue(':newEmailAddress', $newEmailAddress, PDO::PARAM_STR);
-$personUpdate->bindValue(':currentPersonId', $currentPersonId, PDO::PARAM_INT);
-$personUpdate->bindValue(':hashedPassword', $hashedPassword, PDO::PARAM_STR);
+$item->bindValue(':auctionId', $newItemId, PDO::PARAM_INT);
+$item->bindValue(':sellerId', $sellerId , PDO::PARAM_INT);
+$item->bindValue(':name', $name, PDO::PARAM_STR);
+$item->bindValue(':category', $category, PDO::PARAM_INT);
+$item->bindValue(':description', $description, PDO::PARAM_STR);
+$item->bindValue(':status', 1, PDO::PARAM_STR);
 
-$execSuccess = $personUpdate->execute();
+// TODO insert photos
+$execSuccess = $item->execute();
 
-$personUpdate->closeCursor();
+$item->closeCursor();
+
+// TODO bid
 ?>
 
 <!DOCTYPE html>
@@ -53,10 +61,12 @@ $personUpdate->closeCursor();
 if ($execSuccess) {
 ?>
       <p>Update succeeded.</p>
+      <a href="active.php">See Active Listings</a>
 <?php
 } else {
 ?>     
-      <p>Update failed.</p>
+    <p>Update failed.</p>
+    <a href="list.php">Back</a>
 <?php
 }
 ?>

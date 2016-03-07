@@ -43,7 +43,7 @@ $categories->execute();
   </head>
   <body>
     <header>
-        <span class="right">Hello <a href="account.php">Billy</a>!</span>
+        <span class="right">Hello <a href="account.php"><?= htmlspecialchars($_SESSION['userName']) ?></a>!</span>
       <span class="left"></span><a href="index.php"><h1>Auction Web Application</h1></a>
       <ul>
         <li><a href="list.php">List item</a></li>
@@ -120,6 +120,7 @@ $categories->closeCursor();
                     <td><input type="text" class="text-input" value="<?= $thisAuction['ITEM_DESCRIPTION'] ?>"></input></td>
                 </tr>
                 
+                <input type="hidden" name="id" value="<?= htmlspecialchars($thisAuction['AUCTION_ID']) ?>" />
             </table>
             <input type="submit"></input>
 

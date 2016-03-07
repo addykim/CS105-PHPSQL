@@ -30,7 +30,8 @@ $thisAuctionQuery->execute();
   </head>
   <body>
     <header>
-      <span class="right">Hello <a href="account.php">Billy</a>!</span>
+        <!-- TODO add authenticated user id  -->
+      <span class="right">Hello <a href="account.php"><?= htmlspecialchars($_SESSION['userName']) ?></a>!</span>
       <span class="left"></span><a href="index.php"><h1>Auction Web Application</h1></a>
       <ul>
         <li><a href="list.php">List item</a></li>
