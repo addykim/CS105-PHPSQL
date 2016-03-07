@@ -2,7 +2,6 @@
 require_once '/u/askim/openDatabase.php';
 $thisAuctionQuery = $database->prepare(<<<'SQL'
     SELECT 
-        SELLER, 
         CLOSE_TIME, 
         ITEM_CATEGORY, 
         ITEM_CAPTION, 
@@ -12,10 +11,31 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
     WHERE AUCTION_ID = :auctionId;
 SQL
 );    
-
 $thisAuctionQuery->bindValue(':auctionId',  $_GET['id'] , PDO::PARAM_INT);
 $thisAuctionQuery->execute();
-    
+
+$categories = $database->prepare(<<<'SQL'
+    SELECT 
+        NAME 
+    FROM ITEM_CATEGORY
+    WHERE ITEM_CATEGORY_ID = :itemCategory;
+SQL
+);
+
+$thisAuction = $thisAuctionQuery->fetch();
+$categories->bindValue(':itemCategory', $thisAuction['ITEM_CATEGORY'], PDO::PARAM_INT);
+$categories->execute();
+
+$sellers = $database->prepare(<<<'SQL'
+    SELECT 
+        FORENAME
+    FROM PERSON
+    WHERE PERSON_ID = :sellerId;
+SQL
+);
+$sellers->bindValue(':sellerId', $_GET['id'], PDO::PARAM_INT);
+$sellers->execute();
+
 ?>
 
 <!DOCTYPE html>
@@ -45,36 +65,38 @@ $thisAuctionQuery->execute();
         <form>
         <h2><a href="browse.php">Browse Items</a> → Place Bid</h2>
         <div class="item-box">
-<?php
-$thisAuction = $thisAuctionQuery->fetch();
-?>
+
             <? if ($thisAuction['ITEM_PHOTO'] == NULL): ?>
                 <img src="https://pixabay.com/static/uploads/photo/2015/09/09/18/35/night-932424_960_720.jpg" class="stock-image right">
             <? else: ?>
                 <!-- TODO add image -->
             <? endif; ?>
             <h2><?= $thisAuction['ITEM_CAPTION'] ?></h2>
-            <!-- TODO change this to Seller name -->
             <table>
 
                 <tr>
-                    <td><b>Sold By</b></td>
-                    <td><?= $thisAuction['SELLER'] ?></td>
+<?php 
+$seller = $sellers->fetch();
+?>
+                    <td><b>Sold By </b></td>
+                    <td><?= $seller['FORENAME'] ?></td>
+<?php
+$sellers->closeCursor();
+?>
                 </tr>
                 <tr>
-                    <!-- TODO reformat this time -->
-                    <!-- TODO have this countdown -->
                     <td><b>Auction Ends</b></td>
                     <td><?= date( 'M-d h:i:s A', $thisAuction['CLOSE_TIME']); ?> 
                 </tr>
                 <tr>
-                    <td><b>Category</b></td>
-                    <td><?= $thisAuction['ITEM_CATEGORY'] ?></td>
-                </tr>
-                <tr>
-                    <td><b>Condition</b></td>
-                    <!-- TODO grab this from database -->
-                    <td>New</td>
+                    <td><b>Item Category</b></td>
+<?php
+$category = $categories->fetch();
+?>
+                    <td><?= $category['NAME'] ?></td>
+<?php
+$categories->closeCursor();
+?>
                 </tr>
                 <tr>
                     <td><b>Item Description</b></td>

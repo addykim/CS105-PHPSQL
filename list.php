@@ -1,18 +1,5 @@
 <?php
 require_once '/u/askim/openDatabase.php';
-
-if (isset($_POST['upload'])) {
-    $photoFile = fopen($_FILES['photo']['tmp_name'], 'rb');
-    $thisAuctionQuery->bindValue(':photo', $photoFile, PDO::PARAM_LOB);
-} else {
-}
-$thisAuctionQuery = $database->prepare(<<<'SQL'
-    INSERT INTO AUCTION 
-        (ITEM_PHOTO) 
-        VALUES ($photoFile) 
-    WHERE AUCTION_ID=:auctionId;
-SQL
-); 
 $thisAuctionQuery = $database->prepare(<<<'SQL'
     SELECT 
         AUCTION_ID 
@@ -22,9 +9,19 @@ SQL
 );
 $thisAuctionQuery->bindValue(':auctionId', $_GET['id'], PDO::PARAM_INT);
 $thisAuctionQuery->execute();
+
+
+$categories = $database->prepare(<<<'SQL'
+    SELECT 
+        ITEM_CATEGORY_ID,
+        NAME 
+    FROM ITEM_CATEGORY;
+SQL
+);
 // TODO change seller data when using user data   
 // $thisAuctionQuery->bindValue(':buyerId', 1, PDO::PARAM_INT);
-// $thisAuctionQuery->execute();
+$categories->execute();
+// TODO close cursor eventually
  
 
 // Check that there was a 'photo' upload in the post request: isset($_FILES['photo'])
@@ -53,13 +50,13 @@ $thisAuctionQuery->execute();
     </header>
   
     <main>
-        <? if ($uploadSuccess): ?>
-            <h2><a href="list.php">List Item</a> → Item Listed Successfully</h2>
-        <? else: ?>
+        <!-- <? if ($uploadSuccess): ?> -->
+            <!-- <h2><a href="list.php">List Item</a> → Item Listed Successfully</h2> -->
+        <!-- <? else: ?> -->
             <h2>List Item</h2>
-        <? endif; ?>
+        <!-- <? endif; ?> -->
         
-        <form action="listItem.php" method="post" enctype="multipart/form-data">
+        <form action="library/listItem.php" method="post" enctype="multipart/form-data">
             <div class="item-box">
             <table>
                 <tr>
@@ -68,36 +65,35 @@ $thisAuctionQuery->execute();
                 </tr> 
                 <tr>
                     <td><b>Item Name</b></td>
-                    <td><input type="text"></input></td>
+                    <td><input type="text" name="name"></input></td>
                 </tr>
                 <tr>
                     <td><b>Category</b></td>
                     <td>
-                        <select>
-                        <!-- TODO grab categories from database -->
-                            <option value="auto">Automotive</option>
-                            <option value="beauty">Beauty</option>
-                            <option value="food">Food</option>
-                            <option value="home">Home</option>
+                        <select name="category">
+<?php
+foreach ($categories->fetchAll() as $category) {
+?>
+                            <option value="<?= $category['ITEM_CATEGORY_ID']?>"><?= $category['NAME'] ?></option>
+<?php
+}
+$categories->closeCursor();
+?>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Starting Bid</b></td>
-                    <td><input type="number"></input></td>
-                </tr>
-                <tr>
-                    <td><b>Reserved Bid</b></td>
-                    <td><input type="number"></input></td>
+                    <td><input type="number" name="bid"></input></td>
                 </tr>
                 <tr>
                     <td><b>Item Description</b></td>
-                    <td><input type="text"></input></td>
+                    <td><input type="text" name="description"></input></td>
                 </tr>
                 <tr>
                     <td><b>Auction End Time</b></td>
                 <!-- TODO enter time -->
-                    <td>10:00PM</td>
+                    <td><input type="datetime-local"></input></td>
                 </tr>
             </table>
             <input type="hidden" name="id" value="<?= urlencode($auction['AUCTION_ID']); ?>"></input>

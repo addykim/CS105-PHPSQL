@@ -1,22 +1,8 @@
 <?php
-// if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
-//     header('Location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-//     exit(1);
-// }
-require_once '/u/askim/openDatabase.php';
-
-$pesonQuery = $dataBase-prepare(<<<'SQL'
-    SELECT 
-      PERSON_ID,
-      SURNAME,
-      FORENAME,
-      EMAIL_ADDRESS
-    FROM PERSON;
-SQL
-);
-
-$execSuccess = $personQuery->execute();
-$execSuccess = closeCursor();
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
+    header('Location: https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+    exit(1);
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -25,7 +11,6 @@ $execSuccess = closeCursor();
     <meta charset="utf-8"/>
     <link href="stylesheet.css" rel="stylesheet"/>
   </head>
-  <!-- TODO not implemented -->
   <body>
     <header>
       <span class="right"><a href="login.php">Register or Login</a></span>
@@ -63,25 +48,13 @@ $execSuccess = closeCursor();
         <input type="checkbox"></input><label>I agree to the terms and conditions</label><br/>
         <a href="register-success.php">Submit</a>
       </div>
-      <form class="right half-width" form="authenticate.php" method="POST">
-        <h2>Login</h2>
-        <div>
-          <label for="emailAddress"><b>E-maill Address</b></label>
-          <input type="text"></input>      
-        </div>
-        <div>
-          <!-- TODO more "label for" -->
-          <label for="password"><b>Password</b></label>
-          <p><input type="password"></input></p>
 
-        </div>
-        <button>Login</button>
-        <!-- <a href="login-success.php">Submit</a> -->
+      <form action="library/authenticate.php" method="post" enctype="multipart/form-data" class="right half-width">
+        <h2>Login</h2>
+        <p><label for="emailAddress">E-mail Address: </label><input type="email" name="emailAddress"/></p>
+        <p><label for="password">Password: </label><input type="password" name="password"/></p>
+        <p><button>Login</button></p>
       </form>
-      <div>
-        <!-- TODO hide this -->
-        <p>Registration Succesful. Please check your email to verify your account.</p>
-      </div>
     </main>
     <footer class="clear">
       <p><a href="static/acme.php">About Acme</a> | <a href="static/help.php">Help</a> | <a href="static/contact.php">Contact us</a></p>

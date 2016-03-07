@@ -4,6 +4,7 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
     // Optionally output an error page here
     exit(1);
 }
+
 session_start();
 
 require_once '/u/askim/openDatabase.php';
@@ -12,47 +13,54 @@ $emailAddress = $_POST['emailAddress'];
 $rawPassword = $_POST['password'];
 
 $personQuery = $database->prepare(<<<'SQL'
-   SELECT PERSON
-       PERSON_ID, PASSWORD
-    FROM PERSON
-    WHERE EMAIL_ADDRESS = :emailAddress;
+   SELECT PERSON_ID, PASSWORD
+   FROM PERSON
+   WHERE EMAIL_ADDRESS = :emailAddress;
 SQL
 );
+
 $personQuery->bindValue(':emailAddress', $emailAddress, PDO::PARAM_STR);
 $personQuery->execute();
-$personRow->$personQuery->fetch()
-if ($personRow) {
-  if (password_verify($rawPassword), $personRow['PASSWORD'])) {
-    // Good Login
-    $_SESSION['authenticatedUser'] = $personRow['PERSON_ID'];
-  } else {
-    // Password not matched
-  }
+
+$queryStatus = $personQuery->execute();
+
+if ($queryStatus) {
+    $personRow = $personQuery->fetch();
+    $hashedPassword = $personRow['PASSWORD'];
+    $authenticationSucceeded = password_verify($rawPassword, $hashedPassword);
 } else {
-    // Email address doesn't match
+    // E-mail address didn't match
+    $authenticationSucceeded = false;
 }
+
+if ($authenticationSucceeded) {
+    $_SESSION['authenticatedUser'] = $personRow['PERSON_ID'];
+} else {
+    unset($_SESSION['authenticatedUser']);
+}
+
 $personQuery->closeCursor();
 ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <title>Person Table Dump</title>
+    <title>Login</title>
     <meta charset="utf-8"/>
   </head>
   <body>
     <header id="siteHeader">
-      <h1>Person Update</h1>
+      <h1>Login</h1>
     </header>
     <main id="content">
 <?php
-if ($execSuccess) {
+if ($_SESSION['authenticatedUser']) {
 ?>
-      <p>Update succeeded.</p>
+      <p>Hello logged in user, you are PERSON_ID <?= $_SESSION['authenticatedUser'] ?>.</p>
 <?php
 } else {
 ?>     
-      <p>Update failed.</p>
+      <p>Login failed.</p>
 <?php
 }
 ?>

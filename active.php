@@ -9,12 +9,12 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
         ITEM_CAPTION, 
         ITEM_DESCRIPTION, 
         ITEM_PHOTO
-    FROM AUCTION 
-    WHERE SELLER = :sellerId;
+    FROM AUCTION
+    WHERE STATUS = 1;
 SQL
 );    
 // TODO change seller id when using user data
-$thisAuctionQuery->bindValue(':sellerId', 1, PDO::PARAM_INT);
+// $thisAuctionQuery->bindValue(':sellerId', 1, PDO::PARAM_INT);
 $thisAuctionQuery->execute();
     
 ?>
@@ -38,12 +38,11 @@ $thisAuctionQuery->execute();
       </ul>
     </header>
     <main>
-        <h2>Active Lists</h2>
+        <h2>Active Listings</h2>
 <?php
 foreach ($thisAuctionQuery->fetchAll() as $auction) {
 ?>
         <div class="item-box">
-
             <? if ($auction['ITEM_PHOTO'] == NULL): ?>
                 <img src="https://pixabay.com/static/uploads/photo/2015/09/09/18/35/night-932424_960_720.jpg" class="stock-thumb right">
             <? else: ?>
@@ -54,13 +53,12 @@ foreach ($thisAuctionQuery->fetchAll() as $auction) {
                 <h3><?= $auction['ITEM_CAPTION'] ?></h3>
             </a>
 
-            <? if ($auction['AUCTION_STATUS'] == 1): ?>
-                <p><b>Auction ends at </b>: <?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></p>
+
+                <p><b>Auction ends at</b> <?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></p>
                 <ul>
                     <li><a href="update.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Update</a></li>
                     <li><a href="cancel.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Cancel</a></li>
                 </ul>
-            <? endif; ?>
         </div>
 
 

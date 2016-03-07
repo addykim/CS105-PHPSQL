@@ -52,13 +52,10 @@ li.next:before {
 
 a:link {
   text-decoration: none;
-  color: white;
 }
 
 a:visted {
   text-decoration: none;
-  color: white;
-
 }
 
 /*Classes*/
@@ -112,6 +109,11 @@ a:visted {
 .stock-image {
   width: 15em;
   height: 15em;
+}
+
+.text-input {
+  height: 10em;
+  width: 20em;
 }
 
 /*ID*/

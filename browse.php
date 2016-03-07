@@ -9,11 +9,9 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
         ITEM_CAPTION, 
         ITEM_PHOTO
     FROM AUCTION
-    WHERE STATUS=:buyerId;
+    WHERE STATUS=1;
 SQL
 ); 
-// TODO change seller data when using user data   
-$thisAuctionQuery->bindValue(':buyerId', 1, PDO::PARAM_INT);
 $thisAuctionQuery->execute();
     
 

@@ -53,7 +53,7 @@ foreach ($thisAuctionQuery->fetchAll() as $auction) {
             </a>
 
             <? if ($auction['STATUS'] == 1): ?>
-                <p><b>Auction ends at </b><?= $auction['CLOSE_TIME'] ?></p>
+                <p><b>Auction ends at</b> <?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></p>
             <? endif; ?>
 
             <!-- TODO current highest bid -->

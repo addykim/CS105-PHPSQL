@@ -14,4 +14,21 @@ if(isset($_POST["submit"])) {
         $uploadOk = 0;
     }
 }
-?>
+
+if ($uploadOk == 1) {
+	$photoFile = fopen($_FILES['fileToUpload']['tmp_name'], 'rb');
+	$updateStatement->bindValue(':photo', $photoFile, PDO::PARAM_LOB);
+
+$thisAuctionQuery = $database->prepare(<<<'SQL'
+	INSERT INTO AUCTION
+    VALUES
+        ITEM_PHOTO = :photo
+SQL
+);
+
+$thisAuctionQuery->execute();
+}
+
+// Check that there was a 'photo' upload in the post request: isset($_FILES['photo'])
+// Check that the file was uploaded without error: $_FILES['photo']['error'] === 0
+

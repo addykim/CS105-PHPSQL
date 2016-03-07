@@ -46,6 +46,9 @@ $thisAuctionQuery->execute();
 <?php
 $thisAuction = $thisAuctionQuery->fetch();
 ?>
+          <? if ($thisAuction['STATUS'] == 2): ?>
+            <h2>Auction Cancelled</h2>
+          <? endif; ?>
           <? if ($thisAuction['ITEM_PHOTO'] == NULL): ?>
               <img src="https://pixabay.com/static/uploads/photo/2015/09/09/18/35/night-932424_960_720.jpg" class="stock-image right">
           <? else: ?>
