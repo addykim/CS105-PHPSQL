@@ -2,6 +2,7 @@
 require_once '/u/askim/openDatabase.php';
 $thisAuctionQuery = $database->prepare(<<<'SQL'
     SELECT  
+        STATUS,
         SELLER,
         CLOSE_TIME,
         ITEM_CAPTION,
@@ -30,10 +31,10 @@ $sellers = $database->prepare(<<<'SQL'
     SELECT 
         FORENAME
     FROM PERSON
-    WHERE PERSON_ID = :auctionId;
+    WHERE PERSON_ID = :sellerId;
 SQL
 );
-$sellers->bindValue(':auctionId', $_GET['id'], PDO::PARAM_INT);
+$sellers->bindValue(':sellerId', $thisAuction['SELLER'], PDO::PARAM_INT);
 $sellers->execute();
 
 
@@ -52,8 +53,8 @@ $sellers->execute();
           <ul>
             <li><a href="list.php">List item</a></li>
             <li><a href="active.php">Active Listings</a></li>
-            <li><a href="bid.php">Browse Items</a></li>
-            <li><a href="browse.php">Bids/Offers</a></li>
+            <li><a href="browse.php">Browse Items</a></li>
+            <li><a href="offers.php">Bids/Offers</a></li>
           </ul>
         </header>
 
@@ -71,6 +72,26 @@ $sellers->execute();
 
             <table>
                 <tr>
+<?php
+if ($thisAuction['STATUS'] == 1) {
+?>
+                    <td><b>Auction Ends</b></td>
+                    <td><?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></td>
+                </tr>
+                <tr>
+                    <td><b>Bid amount</b></td>
+                    <!-- TODO bid -->
+                    <td></td>
+
+<?php
+} else if ($thisAuction['STATUS'] == 2) {
+?>                      
+                    <td><b>Auction Cancelled</b>
+<?php    
+}
+?>
+                </tr>
+                <tr>
 <?php 
 $seller = $sellers->fetch();
 ?>
@@ -79,18 +100,8 @@ $seller = $sellers->fetch();
 <?php
 $sellers->closeCursor();
 ?>
-                </tr>
                 <tr>
-                    <td><b>Auction Ends</b></td>
-                    <td><?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></td>
-                </tr>
-                <tr>
-                    <td><b>Bid amount</b></td>
-                <!-- <input type="number"></input><br/> -->
-                <!-- <a href="bid-success.php">Submit</a> -->
-                </tr>
-                <tr>
-                    <td><b>Category</b></td>
+                        <td><b>Category</b></td>
 <?php
 $category = $categories->fetch();
 ?>
@@ -105,6 +116,7 @@ $categories->closeCursor();
                     <td><?= $thisAuction['ITEM_DESCRIPTION'] ?></td>
                 </tr>
             </table>
+
             <input type="submit"></input>
 <?php
 $thisAuctionQuery->closeCursor();

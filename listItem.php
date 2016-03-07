@@ -7,7 +7,7 @@
 
 require_once '/u/askim/openDatabase.php';
 
-$sellerId = 3;
+$sellerId = 1;
 // TODO replace once login works
 // $sellerId = $_SESSION['authenticatedUser'];
 $name = $_POST['name'];
@@ -51,7 +51,7 @@ $execSuccess = $item->execute();
 
 $item->closeCursor();
 
-// TODO bid
+// TODO enable adding to bid
 ?>
 
 <!DOCTYPE html>

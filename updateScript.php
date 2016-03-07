@@ -48,15 +48,25 @@ $item->closeCursor();
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-  <head>
-    <title>Person Table Dump</title>
-    <meta charset="utf-8"/>
-  </head>
-  <body>
-    <header id="siteHeader">
-      <h1>Person Update</h1>
-    </header>
-    <main id="content">
+<head>
+        <title>Auction Web Application | Pay for Auction</title>
+        <meta charset="utf-8"/>
+        <link href="stylesheet.css" rel="stylesheet"/>
+      </head>
+      <body>
+        <header>
+          <span class="right"><a href="login.php">Register or Login</a></span>
+          <span class="center"></span><a href="index.php"><h1>Auction Web Application</h1></a>
+          <ul>
+            <li><a href="list.php">List item</a></li>
+            <li><a href="active.php">Active Listings</a></li>
+            <li><a href="bid.php">Browse Items</a></li>
+            <li><a href="browse.php">Bids/Offers</a></li>
+          </ul>
+        </header>
+        <main>
+            <h2><a href="active.php">Active Listings</a> → Update Listing</h2>
+            <div class="item-box">
 <?php
 if ($execSuccess) {
 ?>
@@ -71,5 +81,9 @@ if ($execSuccess) {
 }
 ?>
     </main>
+    <footer class="clear">
+      <p><a href="static/acme.php">About Acme</a> | <a href="static/help.php">Help</a> | <a href="static/contact.php">Contact us</a></p>
+      <p>© 2016 Acme Auctions, Inc. All rights reserved.</p>
+    </footer>
   </body>
 </html>

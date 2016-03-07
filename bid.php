@@ -74,7 +74,10 @@ $sellers->execute();
             <? endif; ?>
             <h2><?= $thisAuction['ITEM_CAPTION'] ?></h2>
             <table>
-
+                <tr>
+                    <td><b>Auction Ends</b></td>
+                    <td><?= date( 'M-d h:i:s A', $thisAuction['CLOSE_TIME']); ?> 
+                </tr>
                 <tr>
 <?php 
 $seller = $sellers->fetch();
@@ -84,10 +87,6 @@ $seller = $sellers->fetch();
 <?php
 $sellers->closeCursor();
 ?>
-                </tr>
-                <tr>
-                    <td><b>Auction Ends</b></td>
-                    <td><?= date( 'M-d h:i:s A', $thisAuction['CLOSE_TIME']); ?> 
                 </tr>
                 <tr>
                     <td><b>Item Category</b></td>

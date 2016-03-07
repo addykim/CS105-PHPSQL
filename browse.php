@@ -13,9 +13,6 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
 SQL
 ); 
 $thisAuctionQuery->execute();
-    
-
-// TODO get user
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -49,6 +46,13 @@ $thisAuctionQuery->execute();
   
 
 <?php
+$maxBidQuery = $database->prepare(<<<'SQL'
+    SELECT
+      MAX(BID.AMMOUNT)
+      FROM BID
+      WHERE AUCTION = :auctionId;
+SQL
+);
 foreach ($thisAuctionQuery->fetchAll() as $auction) {
 ?>
       <div class="item-box">
