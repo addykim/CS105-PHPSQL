@@ -52,21 +52,27 @@ $thisAuctionQuery->execute();
 foreach ($thisAuctionQuery->fetchAll() as $auction) {
 ?>
       <div class="item-box">
-          <? if ($auction['ITEM_PHOTO'] == NULL): ?>
-              <img src="https://pixabay.com/static/uploads/photo/2015/09/09/18/35/night-932424_960_720.jpg" class="stock-thumb right">
-          <? else: ?>
-              <span class="right"><img src="showPhoto.php?id=2" /></span>
+        <? if ($auction['ITEM_PHOTO'] == NULL): ?>
+            <img src="https://pixabay.com/static/uploads/photo/2015/09/09/18/35/night-932424_960_720.jpg" class="stock-thumb right">
+        <? else: ?>
+            <span class="right"><img src="showPhoto.php?id=2" /></span>
 
-              <!-- TODO add image -->
-          <? endif; ?>
-          <a href="bid.php?id=<?= urlencode($auction['AUCTION_ID']); ?>">
-              <h3><?= $auction['ITEM_CAPTION'] ?></h3>
-          </a>
+            <!-- TODO add image -->
+        <? endif; ?>      
+        <a href="bid.php?id=<?= urlencode($auction['AUCTION_ID']); ?>">
+            <h3><?= $auction['ITEM_CAPTION'] ?></h3>              
+        </a>
 
-          <!-- TODO highest bid -->
-
-          <p><b>Auction ends at </b><?= $auction['CLOSE_TIME'] ?></p>
-
+        <table>
+            <tr>
+                <td><b>Highest Bid</b></td>
+                        <!-- TODO highest bid -->
+            </tr>
+            <tr>
+                 <td><b>Auction Ends</b></td>
+                <td><?= $auction['CLOSE_TIME'] ?></td>
+            </tr>
+        </table>
       </div>
 <?php
 }

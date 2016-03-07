@@ -56,7 +56,7 @@ $categories->execute();
             <h2>List Item</h2>
         <!-- <? endif; ?> -->
         
-        <form action="library/listItem.php" method="post" enctype="multipart/form-data">
+        <form action="listItem.php" method="post" enctype="multipart/form-data">
             <div class="item-box">
             <table>
                 <tr>
@@ -96,7 +96,7 @@ $categories->closeCursor();
                     <td><input type="datetime-local"></input></td>
                 </tr>
             </table>
-            <input type="hidden" name="id" value="<?= urlencode($auction['AUCTION_ID']); ?>"></input>
+            <!-- <input type="hidden" name="id" value="<?= urlencode($auction['AUCTION_ID']); ?>"></input> -->
             <button type="submit">Submit</button>
                 <!-- <input type="submit" name="listed"></input>    -->
             </div>

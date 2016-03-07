@@ -14,7 +14,8 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
     FROM AUCTION;
 SQL
 );    
-$thisAuctionQuery->bindValue(':auctionStatus', 1, PDO::PARAM_INT);
+// TODO where person is x
+// $thisAuctionQuery->bindValue(':auctionStatus', 1, PDO::PARAM_INT);
 $thisAuctionQuery->execute();
     
 ?>
@@ -51,10 +52,19 @@ foreach ($thisAuctionQuery->fetchAll() as $auction) {
             <a href="details.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">
                 <h3><?= $auction['ITEM_CAPTION'] ?></h3>
             </a>
-
-            <? if ($auction['STATUS'] == 1): ?>
-                <p><b>Auction ends at</b> <?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></p>
-            <? endif; ?>
+        
+        <table>
+            <tr>
+                <td><b>Highest Bid</b></td>
+                        <!-- TODO highest bid -->
+            </tr>
+            <tr>
+                 <? if ($auction['STATUS'] == 1): ?>
+                    <td><b>Auction Ends At</b></td>
+                    <td><?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></td>   
+                <? endif; ?>
+            </tr>
+        </table>
 
             <!-- TODO current highest bid -->
           </div>

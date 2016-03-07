@@ -2,6 +2,7 @@
 require_once '/u/askim/openDatabase.php';
 $thisAuctionQuery = $database->prepare(<<<'SQL'
     SELECT 
+        SELLER,
         CLOSE_TIME, 
         ITEM_CATEGORY, 
         ITEM_CAPTION, 
@@ -33,7 +34,7 @@ $sellers = $database->prepare(<<<'SQL'
     WHERE PERSON_ID = :sellerId;
 SQL
 );
-$sellers->bindValue(':sellerId', $_GET['id'], PDO::PARAM_INT);
+$sellers->bindValue(':sellerId', $thisAuction['SELLER'], PDO::PARAM_INT);
 $sellers->execute();
 
 ?>

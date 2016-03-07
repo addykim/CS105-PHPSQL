@@ -10,11 +10,13 @@ $thisAuctionQuery = $database->prepare(<<<'SQL'
         ITEM_DESCRIPTION, 
         ITEM_PHOTO
     FROM AUCTION
-    WHERE STATUS = 1;
+    WHERE 
+        STATUS = 1 AND
+        SELLER = :sellerId;
 SQL
 );    
 // TODO change seller id when using user data
-// $thisAuctionQuery->bindValue(':sellerId', 1, PDO::PARAM_INT);
+$thisAuctionQuery->bindValue(':sellerId', 1, PDO::PARAM_INT);
 $thisAuctionQuery->execute();
     
 ?>
@@ -52,13 +54,18 @@ foreach ($thisAuctionQuery->fetchAll() as $auction) {
             <a href="details.php?id=<?= urlencode($auction['AUCTION_ID']); ?>"> 
                 <h3><?= $auction['ITEM_CAPTION'] ?></h3>
             </a>
-
-
-                <p><b>Auction ends at</b> <?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></p>
-                <ul>
-                    <li><a href="update.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Update</a></li>
-                    <li><a href="cancel.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Cancel</a></li>
-                </ul>
+            <table>
+            
+                <tr>
+                    <td><b>Auction Ends At</b></td>
+                    <td><?= date( 'M-d h:i:s A', $auction['CLOSE_TIME']); ?></td>
+                </tr>
+                <tr>
+                    <td><a href="update.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Update</a></td>
+                    <td><a href="cancel.php?id=<?= urlencode($auction['AUCTION_ID']) ?>">Cancel</a></td>
+                </tr>
+                
+            </table>
         </div>
 
 

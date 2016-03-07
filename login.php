@@ -49,7 +49,7 @@ if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on") {
         <a href="register-success.php">Submit</a>
       </div>
 
-      <form action="library/authenticate.php" method="post" enctype="multipart/form-data" class="right half-width">
+      <form action="authenticate.php" method="post" enctype="multipart/form-data" class="right half-width">
         <h2>Login</h2>
         <p><label for="emailAddress">E-mail Address: </label><input type="email" name="emailAddress"/></p>
         <p><label for="password">Password: </label><input type="password" name="password"/></p>
